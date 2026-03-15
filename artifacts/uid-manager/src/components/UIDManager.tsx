@@ -176,7 +176,7 @@ export default function UIDManager() {
 
   return (
     <div
-      dir={language === 'bn' ? 'ltr' : 'ltr'}
+      dir="ltr"
       style={{
         background: bg,
         color: text,
