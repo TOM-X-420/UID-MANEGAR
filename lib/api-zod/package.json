@@ -1,0 +1,16 @@
+{
+  "name": "@workspace/api-zod",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist-types/index.d.ts",
+  "types": "./dist-types/index.d.ts",
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "dependencies": {
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.2"
+  }
+}
