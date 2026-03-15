@@ -1,0 +1,325 @@
+openapi: 3.1.0
+info:
+  title: UID Manager API
+  version: 1.0.0
+  description: FB UID Manager API
+paths:
+  /api/healthz:
+    get:
+      operationId: getHealthz
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+  /api/track:
+    post:
+      operationId: postTrack
+      summary: Track user activity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrackRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackResponse'
+  /api/admin/logs:
+    get:
+      operationId: getAdminLogs
+      summary: Get activity logs
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogsResponse'
+  /api/admin/stats:
+    get:
+      operationId: getAdminStats
+      summary: Get dashboard statistics
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatsResponse'
+  /api/admin/logs/{id}:
+    delete:
+      operationId: deleteAdminLog
+      summary: Delete a log entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/facebook/lookup:
+    post:
+      operationId: postFacebookLookup
+      summary: Facebook UID lookup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LookupRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupResponse'
+  /api/facebook/dump-friends:
+    post:
+      operationId: postFacebookDumpFriends
+      summary: Dump friends for a single UID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DumpFriendsRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DumpFriendsResponse'
+  /api/facebook/bulk-dump-friends:
+    post:
+      operationId: postFacebookBulkDumpFriends
+      summary: Bulk dump friends
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkDumpFriendsRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkDumpFriendsResponse'
+components:
+  schemas:
+    TrackRequest:
+      type: object
+      required:
+        - actionType
+        - deviceInfo
+        - ipAddress
+      properties:
+        actionType:
+          type: string
+        deviceInfo:
+          type: string
+        ipAddress:
+          type: string
+        screenSize:
+          type: string
+        browserInfo:
+          type: string
+        language:
+          type: string
+        platform:
+          type: string
+        timezone:
+          type: string
+        inputData:
+          type: string
+        inputCount:
+          type: integer
+    TrackResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+    LogsResponse:
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityLog'
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+    StatsResponse:
+      type: object
+      properties:
+        totalVisits:
+          type: integer
+        uniqueIPs:
+          type: integer
+        todayVisits:
+          type: integer
+        dataProcessed:
+          type: integer
+        topDevices:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              count:
+                type: integer
+        topBrowsers:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              count:
+                type: integer
+    ActivityLog:
+      type: object
+      properties:
+        id:
+          type: integer
+        ipAddress:
+          type: string
+        deviceInfo:
+          type: string
+        screenSize:
+          type: string
+        browserInfo:
+          type: string
+        language:
+          type: string
+        platform:
+          type: string
+        timezone:
+          type: string
+        inputData:
+          type: string
+        inputCount:
+          type: integer
+        actionType:
+          type: string
+        createdAt:
+          type: string
+    LookupRequest:
+      type: object
+      required:
+        - uids
+        - token
+      properties:
+        uids:
+          type: array
+          items:
+            type: string
+        token:
+          type: string
+        cookie:
+          type: string
+    LookupResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UIDResult'
+    UIDResult:
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        friendCount:
+          type: integer
+        lockStatus:
+          type: string
+        error:
+          type: string
+    DumpFriendsRequest:
+      type: object
+      required:
+        - uid
+        - token
+      properties:
+        uid:
+          type: string
+        token:
+          type: string
+        cookie:
+          type: string
+    DumpFriendsResponse:
+      type: object
+      properties:
+        uid:
+          type: string
+        friends:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+        total:
+          type: integer
+        status:
+          type: string
+    BulkDumpFriendsRequest:
+      type: object
+      required:
+        - uids
+        - token
+      properties:
+        uids:
+          type: array
+          items:
+            type: string
+          maxItems: 500
+        token:
+          type: string
+        cookie:
+          type: string
+    BulkDumpFriendsResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DumpFriendsResponse'

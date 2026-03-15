@@ -1,0 +1,11 @@
+{
+  "name": "artifacts-monorepo",
+  "private": true,
+  "scripts": {
+    "build": "pnpm run typecheck && pnpm --recursive run build",
+    "typecheck": "tsc --build --emitDeclarationOnly"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
