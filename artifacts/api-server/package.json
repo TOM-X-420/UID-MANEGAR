@@ -1,0 +1,24 @@
+{
+  "name": "@workspace/api-server",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "scripts": {
+    "build": "node build.mjs",
+    "start": "node dist/index.cjs"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "cors": "^2.8.5",
+    "drizzle-orm": "^0.43.1",
+    "@workspace/db": "workspace:*",
+    "@workspace/api-zod": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/cors": "^2.8.17",
+    "@types/node": "^22.15.3",
+    "esbuild": "^0.25.3"
+  }
+}

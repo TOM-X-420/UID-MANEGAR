@@ -32,3 +32,13 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Node.js
+node_modules/
+
+# Build outputs
+dist/
+*.tsbuildinfo
+
+# pnpm
+.pnpm-debug.log*
