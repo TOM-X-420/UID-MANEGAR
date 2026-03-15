@@ -1,0 +1,23 @@
+{
+  "name": "@workspace/api-server",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --platform=node --format=cjs --outfile=dist/index.cjs --packages=external",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.cjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@workspace/api-zod": "workspace:*",
+    "@workspace/db": "workspace:*",
+    "express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^20.14.9",
+    "esbuild": "^0.21.5",
+    "tsx": "^4.15.6",
+    "typescript": "^5.4.5"
+  }
+}
