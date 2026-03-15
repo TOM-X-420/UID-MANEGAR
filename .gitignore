@@ -32,3 +32,14 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Node / pnpm
+node_modules/
+
+# TypeScript build outputs / declaration maps
+dist/
+*.tsbuildinfo
+
+# Vite build output
+artifacts/uid-manager/dist/
+
