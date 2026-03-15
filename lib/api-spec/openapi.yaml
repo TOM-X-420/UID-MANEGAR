@@ -1,0 +1,164 @@
+openapi: '3.1.0'
+info:
+  title: FB UID Manager Pro API
+  version: '2.0.0'
+  description: API for tracking and managing Facebook UIDs
+
+servers:
+  - url: /api
+    description: API base path
+
+paths:
+  /healthz:
+    get:
+      operationId: getHealthz
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /track:
+    post:
+      operationId: postTrack
+      summary: Track a Facebook UID event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrackRequest'
+      responses:
+        '200':
+          description: Tracked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackResponse'
+        '400':
+          description: Bad request
+
+  /admin/logs:
+    get:
+      operationId: getAdminLogs
+      summary: Get activity logs (admin)
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: uid
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Activity logs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogsResponse'
+
+  /admin/stats:
+    get:
+      operationId: getAdminStats
+      summary: Get aggregate stats (admin)
+      responses:
+        '200':
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatsResponse'
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      required: [status, timestamp]
+      properties:
+        status:
+          type: string
+          example: ok
+        timestamp:
+          type: string
+          format: date-time
+
+    TrackRequest:
+      type: object
+      required: [uid, event]
+      properties:
+        uid:
+          type: string
+          maxLength: 64
+        event:
+          type: string
+          maxLength: 128
+        meta:
+          type: object
+          additionalProperties: true
+
+    TrackResponse:
+      type: object
+      required: [ok]
+      properties:
+        ok:
+          type: boolean
+
+    LogsResponse:
+      type: object
+      required: [data, total, page, limit]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    LogEntry:
+      type: object
+      required: [id, uid, event, createdAt]
+      properties:
+        id:
+          type: integer
+        uid:
+          type: string
+        event:
+          type: string
+        ip:
+          type: string
+          nullable: true
+        userAgent:
+          type: string
+          nullable: true
+        meta:
+          type: string
+          nullable: true
+        count:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+
+    StatsResponse:
+      type: object
+      required: [totalEvents, uniqueUids]
+      properties:
+        totalEvents:
+          type: integer
+        uniqueUids:
+          type: integer

@@ -1,0 +1,18 @@
+{
+  "name": "uid-manegar-workspace",
+  "private": true,
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=9"
+  },
+  "scripts": {
+    "typecheck": "tsc --build --emitDeclarationOnly",
+    "build": "pnpm -r --workspace-concurrency=1 run build",
+    "dev:api": "pnpm --filter @workspace/api-server dev",
+    "dev:ui": "pnpm --filter @workspace/uid-manager dev"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

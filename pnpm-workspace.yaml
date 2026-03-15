@@ -1,0 +1,5 @@
+packages:
+  - 'lib/*'
+  - 'artifacts/*'
+allowBuilds:
+  esbuild: true
