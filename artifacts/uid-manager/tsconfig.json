@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist-types",
+    "rootDir": "./src",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "noEmit": false,
+    "resolveJsonModule": true
+  },
+  "references": [
+    { "path": "../../lib/api-client-react" }
+  ],
+  "include": ["src", "src/**/*.json"],
+  "exclude": ["node_modules", "dist"]
+}

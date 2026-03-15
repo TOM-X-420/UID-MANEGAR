@@ -1,0 +1,140 @@
+openapi: 3.1.0
+info:
+  title: UID Manager API
+  version: 1.0.0
+paths:
+  /api/healthz:
+    get:
+      operationId: getHealth
+      summary: Health check
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+  /api/track:
+    post:
+      operationId: postTrack
+      summary: Track activity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrackRequest"
+      responses:
+        "200":
+          description: OK
+  /api/admin/logs:
+    get:
+      operationId: getAdminLogs
+      summary: Get activity logs
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LogsResponse"
+  /api/admin/stats:
+    get:
+      operationId: getAdminStats
+      summary: Get admin stats
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsResponse"
+  /api/facebook/lookup:
+    post:
+      operationId: postFacebookLookup
+      summary: Lookup Facebook UIDs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FacebookLookupRequest"
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    TrackRequest:
+      type: object
+      properties:
+        actionType:
+          type: string
+        inputData:
+          type: string
+        inputCount:
+          type: integer
+      required:
+        - actionType
+    LogsResponse:
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ActivityLog"
+        total:
+          type: integer
+    ActivityLog:
+      type: object
+      properties:
+        id:
+          type: integer
+        ipAddress:
+          type: string
+        deviceInfo:
+          type: string
+        actionType:
+          type: string
+        createdAt:
+          type: string
+    StatsResponse:
+      type: object
+      properties:
+        totalVisits:
+          type: integer
+        uniqueIps:
+          type: integer
+        todayVisits:
+          type: integer
+        dataProcessed:
+          type: integer
+    FacebookLookupRequest:
+      type: object
+      properties:
+        uids:
+          type: array
+          items:
+            type: string
+        token:
+          type: string
+        cookie:
+          type: string
+      required:
+        - uids
+        - token

@@ -1,0 +1,15 @@
+{
+  "name": "@workspace/root",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --build --emitDeclarationOnly",
+    "build": "pnpm run typecheck && pnpm -r run build"
+  },
+  "devDependencies": {
+    "typescript": "5.9.2"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@10.0.0"
+}
